@@ -1,0 +1,42 @@
+<section class="panel">
+  <header class="panel__header">
+    <div>
+      <p class="overline">Registro diario</p>
+      <h2 class="title">Añade peso y reps al vuelo</h2>
+    </div>
+  </header>
+
+  <form class="stack" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="exerciseId">Ejercicio *</label>
+      <select id="exerciseId" formControlName="exerciseId">
+        <option value="" disabled>Selecciona uno</option>
+        <option *ngFor="let exercise of exercises" [value]="exercise.id">{{ exercise.name }}</option>
+      </select>
+      <small class="hint" *ngIf="form.controls.exerciseId.touched && form.controls.exerciseId.invalid">
+        Selecciona un ejercicio.
+      </small>
+    </div>
+
+    <div class="double">
+      <div class="field">
+        <label for="weight">Peso (kg) *</label>
+        <input id="weight" type="number" step="0.5" min="0" formControlName="weight" inputmode="decimal" />
+        <small class="hint" *ngIf="form.controls.weight.touched && form.controls.weight.invalid">
+          Mínimo 0.5 kg.
+        </small>
+      </div>
+      <div class="field">
+        <label for="reps">Reps</label>
+        <input id="reps" type="number" min="1" formControlName="reps" inputmode="numeric" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="date">Fecha</label>
+      <input id="date" type="date" formControlName="date" />
+    </div>
+
+    <button class="primary" type="submit">Guardar entrada</button>
+  </form>
+</section>

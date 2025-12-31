@@ -1,0 +1,52 @@
+<section class="panel">
+  <header class="panel__header">
+    <div>
+      <p class="overline">Ejercicios</p>
+      <h2 class="title">Crea y organiza tus movimientos base</h2>
+    </div>
+    <button type="button" class="ghost" (click)="reset()" *ngIf="editing()">Cancelar edición</button>
+  </header>
+
+  <form class="stack" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="name">Nombre *</label>
+      <input id="name" type="text" formControlName="name" placeholder="Press banca, Sentadilla..." autocomplete="off" />
+      <small class="hint" *ngIf="form.controls.name.touched && form.controls.name.invalid">
+        Introduce al menos 2 caracteres.
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="muscle">Grupo muscular (opcional)</label>
+      <input id="muscle" type="text" formControlName="muscleGroup" placeholder="Pecho, Pierna..." autocomplete="off" />
+    </div>
+
+    <button class="primary" type="submit">
+      {{ editing() ? 'Guardar cambios' : 'Añadir ejercicio' }}
+    </button>
+  </form>
+
+  <div class="grid" *ngIf="exercises.length; else emptyState">
+    <article
+      class="card"
+      *ngFor="let exercise of exercises"
+      [class.card--active]="exercise.id === selectedId"
+    >
+      <div class="card__head">
+        <div>
+          <p class="overline">{{ exercise.muscleGroup || 'General' }}</p>
+          <h3>{{ exercise.name }}</h3>
+        </div>
+        <div class="actions">
+          <button type="button" (click)="pick(exercise.id)">Seleccionar</button>
+          <button type="button" (click)="startEdit(exercise)">Editar</button>
+          <button type="button" class="danger" (click)="remove(exercise.id)">Eliminar</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="empty">Añade al menos un ejercicio para empezar.</p>
+  </ng-template>
+</section>

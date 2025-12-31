@@ -1,0 +1,42 @@
+<section class="panel">
+  <header class="panel__header">
+    <div>
+      <p class="overline">Historial</p>
+      <h2 class="title">Revisa la progresión por ejercicio</h2>
+    </div>
+  </header>
+
+  <div class="grid" *ngIf="histories.length; else noExercises">
+    <article class="card" *ngFor="let item of histories">
+      <div class="card__head">
+        <div>
+          <p class="overline">{{ item.exercise.muscleGroup || 'General' }}</p>
+          <h3>{{ item.exercise.name }}</h3>
+        </div>
+        <div class="trend" [class.trend--up]="item.trend === 'up'" [class.trend--down]="item.trend === 'down'" [class.trend--equal]="item.trend === 'equal'">
+          <span *ngIf="item.trend === 'up'">↑ +{{ item.delta | number:'1.0-1' }} kg</span>
+          <span *ngIf="item.trend === 'down'">↓ -{{ item.delta | number:'1.0-1' }} kg</span>
+          <span *ngIf="item.trend === 'equal'">= estable</span>
+          <span *ngIf="item.trend === 'solo'">Nuevo</span>
+        </div>
+      </div>
+
+      <ul class="list" *ngIf="item.entries.length; else noEntries">
+        <li *ngFor="let entry of item.entries | slice:0:5" class="row">
+          <div>
+            <p class="date">{{ formatDate(entry.date) }}</p>
+            <p class="detail">Peso {{ entry.weight }} kg<span *ngIf="entry.reps"> · {{ entry.reps }} reps</span></p>
+          </div>
+        </li>
+      </ul>
+
+      <ng-template #noEntries>
+        <p class="empty">Sin registros todavía.</p>
+      </ng-template>
+    </article>
+  </div>
+
+  <ng-template #noExercises>
+    <p class="empty">Añade ejercicios para empezar a registrar.</p>
+  </ng-template>
+</section>
