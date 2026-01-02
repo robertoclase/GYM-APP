@@ -97,10 +97,10 @@
                 <input type="date" [(ngModel)]="editingDraft!.date" />
               </td>
               <td>
-                <input type="number" step="0.5" min="0" [(ngModel)]="editingDraft!.weight" />
+                <input type="text" [(ngModel)]="editingDraft!.weight" />
               </td>
               <td>
-                <input type="number" min="1" [(ngModel)]="editingDraft!.reps" />
+                <input type="text" [(ngModel)]="editingDraft!.reps" />
               </td>
               <td class="actions">
                 <button type="button" class="small primary" (click)="saveEdit(entry)">Guardar</button>

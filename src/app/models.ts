@@ -7,8 +7,8 @@ export interface Exercise {
 export interface TrainingEntry {
   id: string;
   exerciseId: string;
-  weight: number;
-  reps?: number;
+  weight: string; // permite texto libre
+  reps?: string;
   date: string; // ISO string (yyyy-MM-dd)
 }
 

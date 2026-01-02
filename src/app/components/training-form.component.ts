@@ -20,10 +20,10 @@ export class TrainingFormComponent implements OnChanges {
 
   readonly form = this.fb.group({
     exerciseId: this.fb.control('', { nonNullable: true, validators: [Validators.required] }),
-    weight: this.fb.control<number | null>(null, {
-      validators: [Validators.required, Validators.min(0.5)]
+    weight: this.fb.control<string | null>(null, {
+      validators: [Validators.required]
     }),
-    reps: this.fb.control<number | null>(null, { validators: [Validators.min(1)] }),
+    reps: this.fb.control<string | null>(null),
     date: this.fb.control(this.todayIso(), { nonNullable: true, validators: [Validators.required] })
   });
 
@@ -42,8 +42,8 @@ export class TrainingFormComponent implements OnChanges {
     const raw = this.form.getRawValue();
     const payload: Omit<TrainingEntry, 'id'> = {
       exerciseId: raw.exerciseId,
-      weight: Number(raw.weight),
-      reps: raw.reps ?? undefined,
+      weight: (raw.weight ?? '').toString().trim(),
+      reps: raw.reps?.toString().trim() || undefined,
       date: raw.date
     };
 

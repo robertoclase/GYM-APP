@@ -46,7 +46,14 @@ export class HistoryComponent {
     }
 
     const [latest, previous] = entries;
-    const diff = latest.weight - previous.weight;
+    const latestNum = this.toNumber(latest.weight);
+    const prevNum = this.toNumber(previous.weight);
+
+    if (latestNum === null || prevNum === null) {
+      return { trend: 'solo' };
+    }
+
+    const diff = latestNum - prevNum;
 
     if (Math.abs(diff) < 0.1) {
       return { trend: 'equal', delta: 0 };
@@ -55,5 +62,10 @@ export class HistoryComponent {
     return diff > 0
       ? { trend: 'up', delta: diff }
       : { trend: 'down', delta: Math.abs(diff) };
+  }
+
+  private toNumber(value: string | number | undefined): number | null {
+    const parsed = typeof value === 'number' ? value : parseFloat(String(value));
+    return Number.isFinite(parsed) ? parsed : null;
   }
 }

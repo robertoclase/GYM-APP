@@ -21,14 +21,11 @@
     <div class="double">
       <div class="field">
         <label for="weight">Peso (kg) *</label>
-        <input id="weight" type="number" step="0.5" min="0" formControlName="weight" inputmode="decimal" />
-        <small class="hint" *ngIf="form.controls.weight.touched && form.controls.weight.invalid">
-          Mínimo 0.5 kg.
-        </small>
+        <input id="weight" type="text" formControlName="weight" />
       </div>
       <div class="field">
         <label for="reps">Reps</label>
-        <input id="reps" type="number" min="1" formControlName="reps" inputmode="numeric" />
+        <input id="reps" type="text" formControlName="reps" />
       </div>
     </div>
 

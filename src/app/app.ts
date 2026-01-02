@@ -145,7 +145,7 @@ export class App {
   readonly mode = signal<'log' | 'history'>('log');
 
   editingEntryId = signal<string | null>(null);
-  editingDraft: { weight: number | null; reps: number | null; date: string } | null = null;
+  editingDraft: { weight: string | null; reps: string | null; date: string } | null = null;
 
   readonly historyExercises = computed(() =>
     [...this.exercises()].sort((a, b) => a.name.localeCompare(b.name))
@@ -198,8 +198,8 @@ export class App {
     }
     const payload: TrainingEntry = {
       ...entry,
-      weight: this.editingDraft.weight ?? entry.weight,
-      reps: this.editingDraft.reps ?? undefined,
+      weight: (this.editingDraft.weight ?? entry.weight).toString(),
+      reps: this.editingDraft.reps?.toString() ?? undefined,
       date: this.editingDraft.date
     };
     this.trainingService.update(payload);
