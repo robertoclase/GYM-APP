@@ -191,6 +191,17 @@ body {
 	background: var(--field-bg);
 	cursor: pointer;
 	font-weight: 700;
+	min-width: 42px;
+}
+
+.small.icon {
+	font-size: 1rem;
+}
+
+.small.dark {
+	background: transparent;
+	color: #0f0f0f;
+	border: none;
 }
 
 .small.primary {
@@ -204,9 +215,9 @@ body {
 }
 
 .small.danger {
-	background: var(--warning);
-	color: #3d150e;
-	border-color: transparent;
+	background: transparent;
+	color: #d32f2f;
+	border: none;
 }
 
 .routine h2 {

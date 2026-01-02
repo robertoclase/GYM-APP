@@ -112,8 +112,12 @@
               <td>{{ entry.weight }}</td>
               <td>{{ entry.reps ?? '-' }}</td>
               <td class="actions">
-                <button type="button" class="small ghost" (click)="startEdit(entry)">Editar</button>
-                <button type="button" class="small danger" (click)="deleteEntry(entry.id)">Eliminar</button>
+                <button type="button" class="small icon dark" (click)="startEdit(entry)">
+                  ✏️
+                </button>
+                <button type="button" class="small danger icon" (click)="deleteEntry(entry.id)">
+                  🗑️
+                </button>
               </td>
             </ng-template>
           </tr>
