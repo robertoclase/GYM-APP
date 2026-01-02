@@ -87,16 +87,38 @@
             <th>Fecha</th>
             <th>Peso (kg)</th>
             <th>Reps</th>
+            <th class="actions-col">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let entry of historyEntries()">
-            <td>{{ entry.date | date : 'dd/MM/yyyy' }}</td>
-            <td>{{ entry.weight }}</td>
-            <td>{{ entry.reps ?? '-' }}</td>
+            <ng-container *ngIf="editingEntryId() === entry.id; else viewRow">
+              <td>
+                <input type="date" [(ngModel)]="editingDraft!.date" />
+              </td>
+              <td>
+                <input type="number" step="0.5" min="0" [(ngModel)]="editingDraft!.weight" />
+              </td>
+              <td>
+                <input type="number" min="1" [(ngModel)]="editingDraft!.reps" />
+              </td>
+              <td class="actions">
+                <button type="button" class="small primary" (click)="saveEdit(entry)">Guardar</button>
+                <button type="button" class="small ghost" (click)="cancelEdit()">Cancelar</button>
+              </td>
+            </ng-container>
+            <ng-template #viewRow>
+              <td>{{ entry.date | date:'dd/MM/yyyy' }}</td>
+              <td>{{ entry.weight }}</td>
+              <td>{{ entry.reps ?? '-' }}</td>
+              <td class="actions">
+                <button type="button" class="small ghost" (click)="startEdit(entry)">Editar</button>
+                <button type="button" class="small danger" (click)="deleteEntry(entry.id)">Eliminar</button>
+              </td>
+            </ng-template>
           </tr>
           <tr *ngIf="!historyEntries().length">
-            <td colspan="3" class="empty">Sin registros aún.</td>
+            <td colspan="4" class="empty">Sin registros aún.</td>
           </tr>
         </tbody>
       </table>

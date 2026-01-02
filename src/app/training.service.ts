@@ -25,6 +25,15 @@ export class TrainingService {
     return entry;
   }
 
+  update(entry: TrainingEntry): void {
+    const exists = this.list().some((item) => item.id === entry.id);
+    if (!exists) {
+      return;
+    }
+    const next = this.list().map((item) => (item.id === entry.id ? { ...item, ...entry } : item));
+    this.persist(next);
+  }
+
   remove(id: string): void {
     this.persist(this.list().filter((item) => item.id !== id));
   }

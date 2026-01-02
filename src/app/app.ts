@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ExerciseService } from './exercise.service';
 import { TrainingService } from './training.service';
 import { TrainingEntry } from './models';
@@ -23,7 +24,7 @@ interface RoutineDay {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, TrainingFormComponent],
+  imports: [CommonModule, FormsModule, TrainingFormComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -143,6 +144,9 @@ export class App {
   readonly historyExerciseId = signal<string | null>(null);
   readonly mode = signal<'log' | 'history'>('log');
 
+  editingEntryId = signal<string | null>(null);
+  editingDraft: { weight: number | null; reps: number | null; date: string } | null = null;
+
   readonly historyExercises = computed(() =>
     [...this.exercises()].sort((a, b) => a.name.localeCompare(b.name))
   );
@@ -172,6 +176,41 @@ export class App {
 
   switchMode(next: 'log' | 'history'): void {
     this.mode.set(next);
+  }
+
+  startEdit(entry: TrainingEntry): void {
+    this.editingEntryId.set(entry.id);
+    this.editingDraft = {
+      weight: entry.weight,
+      reps: entry.reps ?? null,
+      date: entry.date
+    };
+  }
+
+  cancelEdit(): void {
+    this.editingEntryId.set(null);
+    this.editingDraft = null;
+  }
+
+  saveEdit(entry: TrainingEntry): void {
+    if (!this.editingDraft) {
+      return;
+    }
+    const payload: TrainingEntry = {
+      ...entry,
+      weight: this.editingDraft.weight ?? entry.weight,
+      reps: this.editingDraft.reps ?? undefined,
+      date: this.editingDraft.date
+    };
+    this.trainingService.update(payload);
+    this.cancelEdit();
+  }
+
+  deleteEntry(id: string): void {
+    this.trainingService.remove(id);
+    if (this.editingEntryId() === id) {
+      this.cancelEdit();
+    }
   }
 
   private scrollToForm(): void {

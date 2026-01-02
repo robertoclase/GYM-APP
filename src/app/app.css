@@ -166,6 +166,10 @@ body {
 	border-bottom: 1px solid var(--border-soft);
 }
 
+.history-table .actions-col {
+	width: 160px;
+}
+
 .history-table th {
 	background: var(--field-bg);
 	color: var(--ink-soft);
@@ -173,6 +177,36 @@ body {
 
 .history-table tr:last-child td {
 	border-bottom: none;
+}
+
+.actions {
+	display: flex;
+	gap: 6px;
+}
+
+.small {
+	padding: 8px 10px;
+	border-radius: 10px;
+	border: 1px solid var(--border-soft);
+	background: var(--field-bg);
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.small.primary {
+	background: var(--accent);
+	color: #0e1a2d;
+	border-color: transparent;
+}
+
+.small.ghost {
+	background: transparent;
+}
+
+.small.danger {
+	background: var(--warning);
+	color: #3d150e;
+	border-color: transparent;
 }
 
 .routine h2 {
