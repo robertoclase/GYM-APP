@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Exercise, TrainingEntry, Trend } from '../models';
+import { Exercise, TrainingEntry, Trend } from '../../models';
 
 interface ExerciseHistory {
   exercise: Exercise;

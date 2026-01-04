@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Exercise, TrainingEntry } from '../models';
+import { Exercise, TrainingEntry } from '../../models';
 
 @Component({
   selector: 'mg-training-form',

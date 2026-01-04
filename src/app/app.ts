@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ExerciseService } from './exercise.service';
 import { TrainingService } from './training.service';
 import { Exercise, TrainingEntry } from './models';
-import { TrainingFormComponent } from './components/training-form.component';
+import { TrainingFormComponent } from './components/training-form/training-form.component';
 
 interface RoutineExercise {
   name: string;
