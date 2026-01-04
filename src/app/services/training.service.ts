@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { TrainingEntry } from './models';
+import { TrainingEntry } from '../models';
 import { StorageService } from './storage.service';
 
 const KEY = 'training-entries';
@@ -7,9 +7,7 @@ const KEY = 'training-entries';
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
   private readonly storage = inject(StorageService);
-  private readonly list = signal<TrainingEntry[]>(
-    this.storage.read<TrainingEntry[]>(KEY, [])
-  );
+  private readonly list = signal<TrainingEntry[]>(this.storage.read<TrainingEntry[]>(KEY, []));
 
   readonly entries = computed(() =>
     [...this.list()].sort((a, b) => b.date.localeCompare(a.date))

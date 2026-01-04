@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Exercise } from './models';
+import { Exercise } from '../models';
 import { StorageService } from './storage.service';
 
 const KEY = 'exercises';

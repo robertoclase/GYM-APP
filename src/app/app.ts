@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ExerciseService } from './exercise.service';
-import { TrainingService } from './training.service';
+import { ExerciseService } from './services/exercise.service';
+import { TrainingService } from './services/training.service';
 import { Exercise, TrainingEntry } from './models';
 import { TrainingFormComponent } from './components/training-form/training-form.component';
 
