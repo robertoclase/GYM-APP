@@ -42,6 +42,10 @@ export class TrainingService {
     this.persist(this.list().filter((item) => item.exerciseId !== exerciseId));
   }
 
+  replaceAll(next: TrainingEntry[]): void {
+    this.persist(next);
+  }
+
   entriesForExercise(exerciseId: string): TrainingEntry[] {
     return this.entries().filter((item) => item.exerciseId === exerciseId);
   }

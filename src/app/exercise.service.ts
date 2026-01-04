@@ -38,6 +38,10 @@ export class ExerciseService {
     this.persist(this.list().filter((item) => item.id !== id));
   }
 
+  replaceAll(next: Exercise[]): void {
+    this.persist(next);
+  }
+
   private persist(next: Exercise[]): void {
     this.list.set(next);
     this.storage.write(KEY, next);

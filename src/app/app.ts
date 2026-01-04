@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild, computed, inject, signal } from '@ang
 import { FormsModule } from '@angular/forms';
 import { ExerciseService } from './exercise.service';
 import { TrainingService } from './training.service';
-import { TrainingEntry } from './models';
+import { Exercise, TrainingEntry } from './models';
 import { TrainingFormComponent } from './components/training-form.component';
 
 interface RoutineExercise {
@@ -33,6 +33,7 @@ export class App {
   private readonly trainingService = inject(TrainingService);
 
   @ViewChild('logFormRef') private logFormRef?: ElementRef<HTMLElement>;
+  @ViewChild('importInput') private importInput?: ElementRef<HTMLInputElement>;
 
   readonly exercises = this.exerciseService.exercises;
   readonly entries = this.trainingService.entries;
@@ -69,8 +70,8 @@ export class App {
         { name: 'Tríceps katana', detail: '2x12-15 (hipertrofia)', muscleGroup: 'Tríceps' },
         { name: 'Crunch en polea', detail: '3x12-15 (hipertrofia)', muscleGroup: 'Core' },
         {
-          name: 'Elevaciones de piernas colgado',
-          detail: '3x10-12 (hipertrofia)',
+          name: 'Crunch abdominal con discos',
+          detail: '3x10-12 (hipertrofia) *',
           muscleGroup: 'Core'
         },
         { name: 'Russian twists', detail: '3x12-15 (hipertrofia) *', muscleGroup: 'Core' }
@@ -210,6 +211,52 @@ export class App {
     this.trainingService.remove(id);
     if (this.editingEntryId() === id) {
       this.cancelEdit();
+    }
+  }
+
+  exportData(): void {
+    const data = {
+      exercises: this.exercises(),
+      entries: this.entries()
+    } satisfies { exercises: Exercise[]; entries: TrainingEntry[] };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mara-gym-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  triggerImport(): void {
+    this.importInput?.nativeElement?.click();
+  }
+
+  async handleImport(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as { exercises?: Exercise[]; entries?: TrainingEntry[] };
+
+      if (!Array.isArray(parsed.exercises) || !Array.isArray(parsed.entries)) {
+        throw new Error('Formato inválido: se esperaban ejercicios y registros.');
+      }
+
+      this.exerciseService.replaceAll(parsed.exercises);
+      this.trainingService.replaceAll(parsed.entries);
+      this.historyExerciseId.set(null);
+      this.cancelEdit();
+    } catch (err) {
+      console.error('No se pudo importar el respaldo', err);
+      alert('No se pudo importar el archivo. Revisa que sea un JSON exportado desde la app.');
+    } finally {
+      input.value = '';
     }
   }
 

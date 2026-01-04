@@ -68,6 +68,18 @@
     <h2>Ejercicios y su historial</h2>
     <p class="note">Toca un ejercicio para ver sus registros en tabla.</p>
 
+    <div class="backup">
+      <button type="button" class="small ghost" (click)="exportData()">Exportar JSON</button>
+      <button type="button" class="small primary" (click)="triggerImport()">Importar JSON</button>
+      <input
+        #importInput
+        type="file"
+        accept="application/json"
+        class="visually-hidden"
+        (change)="handleImport($event)"
+      />
+    </div>
+
     <div class="exercise-grid">
       <button
         type="button"
